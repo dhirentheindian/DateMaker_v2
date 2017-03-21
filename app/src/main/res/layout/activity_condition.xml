@@ -41,11 +41,22 @@
                 android:layout_marginTop="5dp"/>
 
             <CheckBox
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/cond_cbox_budget"
                 android:layout_below="@id/cond_sb"
                 android:text="Doesn't matter"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_selected"
+                android:text="Chosen Budget: PHP 500"
+                android:layout_alignBaseline="@+id/cond_cbox_budget"
+                android:layout_alignBottom="@+id/cond_cbox_budget"
+                android:layout_toRightOf="@+id/cond_cbox_budget"
+                android:layout_toEndOf="@+id/cond_cbox_budget"
+                android:layout_marginLeft="29dp"
+                android:layout_marginStart="29dp" />
 
         </RelativeLayout>
 
