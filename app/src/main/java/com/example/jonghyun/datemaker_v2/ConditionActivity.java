@@ -35,11 +35,15 @@ public class ConditionActivity extends AppCompatActivity {
         cond_tp_end = (TimePicker) findViewById(R.id.cond_tp_end);
         tv_selected = (TextView) findViewById(R.id.tv_selected);
         cond_sb.setMax(5000);
+       // cond_sb.setProgress(500);
+        cond_sb.incrementProgressBy(500);
         cond_sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(progress <= minimum){
-                    progress = progress+minimum;
+                progress = progress / minimum;
+                progress = progress * minimum;
+                if(progress < minimum){
+                    progress = progress + minimum;
                 }
                 tv_selected.setText("Chosen Budget: PHP "+progress);
                 budgetValue = progress;
