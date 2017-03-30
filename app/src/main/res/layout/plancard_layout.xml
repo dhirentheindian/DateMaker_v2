@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/resultcardview"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="7dp"
+    app:contentPadding="4dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+
+    android:clickable="true"
+
+    app:cardBackgroundColor="#9e9e9e">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_first"
+
+            android:text="Title"
+            android:textColor="#fafafa"
+            android:textSize="16sp"
+            android:padding="2dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_second"
+            android:layout_below="@id/tv_first"
+            android:text="Title"
+            android:textColor="#fafafa"
+            android:textSize="16sp"
+            android:padding="2dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_third"
+            android:layout_below="@+id/tv_second"
+            android:text="Title"
+            android:textColor="#fafafa"
+            android:textSize="16sp"
+            android:padding="2dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_third"
+            android:padding="2dp"
+            android:text="Total Cost"
+
+            android:textColor="#fafafa"
+            android:id="@+id/tv_result_cost"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

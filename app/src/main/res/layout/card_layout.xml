@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/cardview"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="7dp"
+    app:contentPadding="4dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+
+    android:clickable="true"
+
+    app:cardBackgroundColor="#9e9e9e">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_title"
+
+            android:text="Title"
+            android:textColor="#fafafa"
+            android:textSize="24sp"
+            android:padding="2dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_subtitle"
+            android:text="Subtitle"
+            android:textColor="#fafafa"
+            android:textSize="14sp"
+
+            android:layout_below="@id/tv_title"
+            android:padding="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_subtitle"
+            android:padding="2dp"
+            android:text="time"
+            android:textColor="#fafafa"
+            android:id="@+id/tv_time"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get Directions"
+            android:background="#3B89ED"
+            android:padding="10dp"
+            android:id="@+id/btn_getDirections"
+            android:textColor="#ffffff"
+            android:layout_below="@id/tv_time"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
