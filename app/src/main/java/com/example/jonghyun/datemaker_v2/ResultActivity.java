@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-
 import com.google.firebase.FirebaseException;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,24 +42,18 @@ public class ResultActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Result");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent i = getIntent();
-        ArrayList<String> title = new ArrayList<String>();
-        ArrayList<String> openTime = new ArrayList<String>();
-        ArrayList<String> closeTime = new ArrayList<String>();
-        ArrayList<String> city = new ArrayList<String>();
-        ArrayList<String> address = new ArrayList<String>();
-        ArrayList<String> cuisine = new ArrayList<String>();
-        ArrayList<Integer> budgets = new ArrayList<Integer>();
-        ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+        ArrayList<Restaurant> restaurants;
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference(); // gets root
         //DatabaseReference ref = database.getReference().child("Recreation"); // gets recreation list
-        //DatabaseReference ref = database.getReference().child("Recreation");
 
         //get the extras from the ConditionActivity.java
+        final int budget = i.getIntExtra("budget", 499);
+        final int start = i.getIntExtra("starthour",99);
+        Log.i(TAG, "Starting budget is" + budget);
+        //checker whether it went here again yet or not
         int flag = i.getIntExtra("flag", 0);
-        int budget = i.getIntExtra("startbudget", 499);
-        int start = i.getIntExtra("starthour",99);
-        restaurants = i.getParcelableArrayListExtra("recreations");
+        restaurants = i.getParcelableArrayListExtra("recreations"); // first run this would be null
 
         if(flag == 0) {
             ref.addValueEventListener(new ValueEventListener() {
@@ -77,6 +70,8 @@ public class ResultActivity extends AppCompatActivity {
                         }
                     }
                     Intent j = new Intent(ResultActivity.this, ResultActivity.class);
+                    j.putExtra("budget", budget);
+                    j.putExtra("starthour", start);
                     j.putParcelableArrayListExtra("recreations", rests);
                     j.putExtra("flag", 1);
                     ResultActivity.this.startActivity(j);
@@ -90,33 +85,35 @@ public class ResultActivity extends AppCompatActivity {
         }
         else if(flag == 1){
             //hard coded shit. should be channged once firebase is implemented!
-            ArrayList<Idea> ideas = new ArrayList<Idea>();
-            Random ran = new Random();
-            int num1, num2, num3, num4, num5, num6;
-            num1 = ran.nextInt(restaurants.size());
-            num2 = ran.nextInt(restaurants.size());
-            num3 = ran.nextInt(restaurants.size());
-            num4 = ran.nextInt(restaurants.size());
-            num5 = ran.nextInt(restaurants.size());
-            num6 = ran.nextInt(restaurants.size());
-            for(int ctr = 0; ctr < restaurants.size(); ctr++) {
-                ideas.add(new Idea(restaurants.get(ctr).getTitle(), restaurants.get(ctr).getOpenTime(), restaurants.get(ctr).getCloseTime(), restaurants.get(ctr).getCity(), restaurants.get(ctr).getAddress(), restaurants.get(ctr).getBudget(), restaurants.get(ctr).getCuisine()));
-            }
-            if(ideas.size() < 3) {
-                ideas.add(new Idea("Yabu","12:00","22:00","Makati City","Glorietta 5, Ayala Center, Makati, 1224 Metro Manila",800, "Japanese"));
-                ideas.add(new Idea("Glorietta","test","test","test","Glorietta, Makati City",250, "One of the popular malls in the Philippines"));
-                ideas.add(new Idea("Mystery Manila","13:00","22:00","Makati City","Jupiter Street, Makati",1000, "Thriller"));
-            }
-            //Idea r1 = new Idea("Mystery Manila","13:00","22:00","Makati City","Jupiter Street, Makati",1000, "Thriller");
-            //Idea r2 = new Idea("Glorietta","test","test","test","Glorietta, Makati City",250, "One of the popular malls in the Philippines");
-            //Each Resto/Rec must be converted to an idea then each date plan must be converted to Plan. Then all Plans will be stored in an arraylist of plans :D
-            //A plan is basically 2 - 3 Ideas i.e. resto or rec
-            Plan p = new Plan(ideas.get(num1), ideas.get(num2), ideas.get(num3));
             ArrayList<Plan> plans = new ArrayList<>();
-            plans.add(p);
-            p = new Plan(ideas.get(num4), ideas.get(num5), ideas.get(num6));
-            plans.add(p);
-
+            ArrayList<Idea> ideas = new ArrayList<>();
+            int totalBudget;
+            Random ran = new Random();
+            for(int ctr = 0; ctr < restaurants.size(); ctr++) {
+                totalBudget = budget;
+                Log.i(TAG, "Budget is " + totalBudget);
+                for(int ctr2 = ctr+1; ctr2 < restaurants.size(); ctr2++) {
+                    if(ctr+1 == ctr2 && restaurants.get(ctr).getBudget() <= totalBudget) {
+                        ideas.add(new Idea(restaurants.get(ctr).getTitle(), restaurants.get(ctr).getOpenTime(), restaurants.get(ctr).getCloseTime(), restaurants.get(ctr).getCity(), restaurants.get(ctr).getAddress(), restaurants.get(ctr).getBudget(), restaurants.get(ctr).getCuisine()));
+                        totalBudget -= restaurants.get(ctr).getBudget();
+                    }
+                    else if (restaurants.get(ctr2).getBudget() <= totalBudget) {
+                        ideas.add(new Idea(restaurants.get(ctr2).getTitle(), restaurants.get(ctr2).getOpenTime(), restaurants.get(ctr2).getCloseTime(), restaurants.get(ctr2).getCity(), restaurants.get(ctr2).getAddress(), restaurants.get(ctr2).getBudget(), restaurants.get(ctr2).getCuisine()));
+                        totalBudget -= restaurants.get(ctr2).getBudget();
+                    }
+                }
+                if(ideas.size() >= 3) {
+                    plans.add(new Plan(ideas.get(0), ideas.get(1), ideas.get(2)));
+                }
+                ideas.clear();
+            }
+            if(plans.isEmpty()) {
+                ideas.add(new Idea("Sad","12:00","22:00","Makati City","Glorietta 5, Ayala Center, Makati, 1224 Metro Manila",0, "Make iyak"));
+                ideas.add(new Idea("Lakad nalang kayo sa park","13:00","22:00","Makati City","Jupiter Street, Makati",0, "Make lakad"));
+                ideas.add(new Idea("You need to work bes","test","test","test","Glorietta, Makati City",0, "Make pera"));
+                plans.add(new Plan(ideas.get(0), ideas.get(1), ideas.get(2)));
+            }
+            
             rv_resultactivity = (RecyclerView) findViewById(R.id.rv_resultactivity);
             layoutManager = new LinearLayoutManager(this);
             rv_resultactivity.setLayoutManager(layoutManager);
